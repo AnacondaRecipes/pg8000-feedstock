@@ -16,11 +16,11 @@ build:
 
 requirements:
   host:
-    - python >=3.5
+    - python >=3.6
     - pip
   run:
-    - python >=3.5
-    - scramp 1.1.1
+    - python >=3.6
+    - scramp ==1.4.0
 
 test:
   imports:

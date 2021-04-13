@@ -28,8 +28,8 @@ test:
 
 about:
   home: https://github.com/tlocke/pg8000
-  license: MIT
-  license_family: MIT
+  license: BSD 3-clause
+  license_family: BSD
   license_file: LICENSE
   summary: PostgreSQL interface library
 

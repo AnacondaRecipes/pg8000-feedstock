@@ -1,28 +1,30 @@
 {% set name = "pg8000" %}
-{% set version = "1.20.0" %}
+{% set version = "1.31.4" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 490ec22a92601f0454b3ed4c8d4ecddc30f66c0e3f783f0ecc581037749a8c55
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: e7ecce4339891f27b0b22e2f79eb9efe44118bd384207359fc18350f788ace00
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv
   noarch: python
+  skip: true  # [py<39]
 
 requirements:
   host:
-    - python >=3.6
+    - python
     - pip
-    - setuptools
-    - wheel
+    - hatchling
+    - versioningit >=3.3.0
   run:
-    - python >=3.6
-    - scramp >=1.4.0
+    - python
+    - scramp >=1.4.5
+    - python-dateutil >=2.8.2
 
 test:
   imports:
@@ -40,7 +42,6 @@ about:
   license_family: BSD
   license_file: LICENSE
   summary: PostgreSQL interface library
-
   description: |
     pg8000 is a Pure-Python interface to the PostgreSQL database engine.  It is
     one of many PostgreSQL interfaces for the Python programming language.
@@ -50,6 +51,8 @@ about:
     version 2.0.
     pg8000's name comes from the belief that it is probably about the 8000th
     PostgreSQL interface for Python.
+
+
 
 extra:
   recipe-maintainers:

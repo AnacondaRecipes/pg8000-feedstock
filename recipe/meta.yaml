@@ -10,49 +10,50 @@ source:
   sha256: e7ecce4339891f27b0b22e2f79eb9efe44118bd384207359fc18350f788ace00
 
 build:
-  number: 0
-  script: {{ PYTHON }} -m pip install . -vv
-  noarch: python
   skip: true  # [py<39]
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - python
     - pip
     - hatchling
-    - versioningit >=3.3.0
+    - versioningit 3.3.0
   run:
     - python
     - scramp >=1.4.5
     - python-dateutil >=2.8.2
 
+# Skip tests that requires a working PostgreSQL infrastructure
+{%- set ignore_dirs = ["dbapi", "legacy", "native"] %}
+# Skip due to FileNotFoundError
+{%- set ignore_test = "not test_readme" %}
+
 test:
   imports:
     - pg8000
+  source_files:
+    - test
   requires:
     - pip
+    - pytest
   commands:
     - pip check
+    - pytest -v test {% for d in ignore_dirs %}--ignore=test/{{ d }} {% endfor %}-k "{{ ignore_test }}"
 
 about:
   home: https://github.com/tlocke/pg8000
   dev_url: https://github.com/tlocke/pg8000
-  doc_url: https://github.com/tlocke/pg8000/blob/master/README.adoc
-  license: BSD-3-clause
+  doc_url: https://github.com/tlocke/pg8000
+  license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
   summary: PostgreSQL interface library
   description: |
-    pg8000 is a Pure-Python interface to the PostgreSQL database engine.  It is
-    one of many PostgreSQL interfaces for the Python programming language.
-    pg8000 is somewhat distinctive in that it is written entirely in Python and
-    does not rely on any external libraries (such as a compiled python module,
-    or PostgreSQL's libpq library). pg8000 supports the standard Python DB-API
-    version 2.0.
+    pg8000 is a pure-Python PostgreSQL driver that complies with DB-API 2.0.
     pg8000's name comes from the belief that it is probably about the 8000th
     PostgreSQL interface for Python.
-
-
 
 extra:
   recipe-maintainers:

@@ -1,25 +1,25 @@
 {% set name = "pg8000" %}
-{% set version = "1.31.4" %}
+{% set version = "1.31.5" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: e7ecce4339891f27b0b22e2f79eb9efe44118bd384207359fc18350f788ace00
+  sha256: 46ebb03be52b7a77c03c725c79da2ca281d6e8f59577ca66b17c9009618cae78
 
 build:
-  skip: true  # [py<39]
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<39]
 
 requirements:
   host:
     - python
     - pip
     - hatchling
-    - versioningit 3.3.0
+    - versioningit >=3.3.0
   run:
     - python
     - scramp >=1.4.5
@@ -35,17 +35,16 @@ test:
     - pg8000
   source_files:
     - test
-  requires:
-    - pip
-    - pytest
   commands:
     - pip check
     - pytest -v test {% for d in ignore_dirs %}--ignore=test/{{ d }} {% endfor %}-k "{{ ignore_test }}"
+  requires:
+    - pip
+    - pytest
 
 about:
-  home: https://github.com/tlocke/pg8000
-  dev_url: https://github.com/tlocke/pg8000
-  doc_url: https://github.com/tlocke/pg8000
+  home: https://codeberg.org/tlocke/pg8000
+  
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
@@ -54,6 +53,8 @@ about:
     pg8000 is a pure-Python PostgreSQL driver that complies with DB-API 2.0.
     pg8000's name comes from the belief that it is probably about the 8000th
     PostgreSQL interface for Python.
+  dev_url: https://codeberg.org/tlocke/pg8000
+  doc_url: https://codeberg.org/tlocke/pg8000/src/branch/main/README.md
 
 extra:
   recipe-maintainers:

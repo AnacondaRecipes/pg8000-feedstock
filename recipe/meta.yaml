@@ -26,11 +26,11 @@ requirements:
     - python-dateutil >=2.8.2
 
 # Skip tests that requires a working PostgreSQL infrastructure
-{%- set ignore_dirs = " --ignore=test/dbapi" %}
-{%- set ignore_dirs = ignore_dirs + " --ignore=test/legacy" %}
-{%- set ignore_dirs = ignore_dirs + " --ignore=test/native" %}
+{% set ignore_dirs = " --ignore=test/dbapi" %}
+{% set ignore_dirs = ignore_dirs + " --ignore=test/legacy" %}
+{% set ignore_dirs = ignore_dirs + " --ignore=test/native" %}
 # Skip due to FileNotFoundError
-{%- set ignore_test = "not test_readme" %}
+{% set ignore_test = "not test_readme" %}
 
 test:
   imports:

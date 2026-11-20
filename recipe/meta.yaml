@@ -1,5 +1,5 @@
 {% set name = "pg8000" %}
-{% set version = "1.31.5" %}
+{% set version = "1.31.6" %}
 
 package:
   name: {{ name }}
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 46ebb03be52b7a77c03c725c79da2ca281d6e8f59577ca66b17c9009618cae78
+  sha256: 553b240256d4b2d8f0ad2af28d07df1f9980247f74ac98d2c2b573762ec1ff1b
 
 build:
-  number: 1
+  number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   skip: true  # [py<39]
 
@@ -22,13 +22,15 @@ requirements:
     - versioningit >=3.3.0
   run:
     - python
-    - scramp >=1.4.5
+    - scramp ==1.5.0
     - python-dateutil >=2.8.2
 
 # Skip tests that requires a working PostgreSQL infrastructure
-{%- set ignore_dirs = ["dbapi", "legacy", "native"] %}
+{% set ignore_dirs = " --ignore=test/dbapi" %}
+{% set ignore_dirs = ignore_dirs + " --ignore=test/legacy" %}
+{% set ignore_dirs = ignore_dirs + " --ignore=test/native" %}
 # Skip due to FileNotFoundError
-{%- set ignore_test = "not test_readme" %}
+{% set ignore_test = "not test_readme" %}
 
 test:
   imports:
@@ -37,14 +39,14 @@ test:
     - test
   commands:
     - pip check
-    - pytest -v test {% for d in ignore_dirs %}--ignore=test/{{ d }} {% endfor %}-k "{{ ignore_test }}"
+    - pytest -v test{{ ignore_dirs }} -k "{{ ignore_test }}"
   requires:
     - pip
     - pytest
 
 about:
   home: https://codeberg.org/tlocke/pg8000
-  
+
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
